@@ -1,5 +1,7 @@
 # T-Rex Animation Generator
 
+![Demo of the T-Rex Animation Generator in action](./assets/ScreenRecording2025-07-29at4.58.50AM-ezgif.com-video-to-gif-converter.gif)
+
 This is a command-line tool to convert a sequence of images into animated GIFs and MP4 videos at various frame rates. It's designed to be simple and interactive, allowing you to generate multiple animation formats from a single set of source images.
 
 ## Features
