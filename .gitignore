@@ -1,0 +1,18 @@
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+
+# Generated output files
+output/
+output_archive/
+
+# User-provided images
+# Keep the directory, but ignore its contents
+images/*
+!images/README.md
+!images/.gitkeep
+
+# IDE / OS specific
+.vscode/
+.DS_Store
