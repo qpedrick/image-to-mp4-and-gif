@@ -75,19 +75,44 @@ def handle_existing_output() -> bool:
                 print("Invalid choice. Please enter 'A' to archive or 'D' to delete.")
     return True # No existing output, so we can proceed
 
-def create_mp4(images: List[Image.Image], fps: int, output_path: str, target_duration: int) -> None:
-    """Creates a fixed-duration MP4 video by looping the image sequence."""
-    print(f"\n--- Creating MP4 at {fps} FPS ---")
-    num_frames = len(images)
-    sequence_duration = num_frames / fps
-    num_loops = max(1, round(target_duration / sequence_duration))
+def create_mp4(images: List[Image.Image],
+               view_fps: int,          # what the user asked for
+               output_path: str,
+               target_duration: int) -> None:
+    """Creates a LinkedIn-friendly MP4 while preserving the slow cadence."""
+    print(f"\n--- Creating MP4 at {view_fps} view-FPS (encoded) ---")
 
-    print(f"The {num_frames}-frame sequence will be looped {num_loops} times for a ~{target_duration}s video.")
-    
-    with imageio.get_writer(output_path, fps=fps, codec='libx264', quality=8) as writer:
+    # 1. Pick an encode FPS that LinkedIn accepts (≥10). Feel free to tweak.
+    encode_fps = 24 if view_fps < 10 else view_fps
+
+    # 2. Work out how many times to duplicate each frame.
+    repeat_factor = encode_fps // view_fps
+    if encode_fps % view_fps:
+        repeat_factor += 1  # round up if it doesn’t divide evenly
+
+    # 3. Figure out how many loops we need for the target length.
+    num_frames         = len(images)
+    sequence_duration  = num_frames / view_fps          # perceived speed
+    num_loops          = max(1, round(target_duration / sequence_duration))
+
+    print(
+        f" LinkedIn encode FPS : {encode_fps}\n"
+        f" Repeat factor       : {repeat_factor}× per original frame\n"
+        f" Loops for duration  : {num_loops} (≈{target_duration}s total)"
+    )
+
+    with imageio.get_writer(
+        output_path,
+        fps=encode_fps,
+        codec='libx264',
+        quality=8
+    ) as writer:
         for _ in range(num_loops):
-            for image in images:
-                writer.append_data(imageio.core.asarray(image))
+            for img in images:
+                # 4. Duplicate each frame.
+                for _ in range(repeat_factor):
+                    writer.append_data(imageio.core.asarray(img))
+
     print(f"Successfully created video: {output_path}")
 
 def create_gif(images: List[Image.Image], fps: int, output_path: str) -> None:
