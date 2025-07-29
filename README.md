@@ -68,6 +68,7 @@ The generated files will be saved in the `output/gif/` and `output/mp4/` directo
 ├── images/             # Folder for your source PNG images
 ├── output/             # Folder for generated GIFs and MP4s
 ├── output_archive/     # Old outputs are moved here if you choose to archive
+├── assets/             # Demo GIF
 ├── .gitignore          # Specifies files for Git to ignore
 ├── LICENSE             # Project license file
 └── README.md           # This file
