@@ -20,7 +20,7 @@ This is a command-line tool to convert a sequence of images into animated GIFs a
 
 1.  **Clone the repository:**
     ```sh
-    git clone <your-repo-url>
+    git clone https://github.com/qpedrick/image-to-mp4-and-gif.git
     cd t-rex-img-gen-gif
     ```
 
